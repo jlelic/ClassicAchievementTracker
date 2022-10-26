@@ -1,0 +1,33 @@
+.content {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.selector {
+  min-width: 200px;
+  width: 200px;
+}
+
+.achievements {
+}
+
+.notFound {
+  color: var(--tooltip-text);
+  font-style: italic;
+}
+
+@media only screen and (max-width: 1000px) {
+  .pad {
+    display: none;
+  }
+  .content {
+    justify-content: flex-start;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .content {
+    flex-direction: column;
+  }
+}

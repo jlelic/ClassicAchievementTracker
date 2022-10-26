@@ -1,0 +1,30 @@
+.selector {
+    min-width: 200px;
+    width: 200px;
+}
+
+.category {
+    background-color: var(--background-title);
+    background: linear-gradient(180deg, var(--background-title-secondary) 0%, var(--background-title) 20%);
+    border-radius: var(--border-radius);
+    padding: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.category:hover, .category.selected {
+    background: linear-gradient(180deg, var(--background-highligthed) 0%, var(--background-highligthed-secondary) 20%);
+}
+
+.main {
+    color: var(--highlighted-text);
+    border: solid 2px var(--border-primary);
+    margin-bottom: 3px;
+}
+
+.child {
+    margin-left: 12px;
+    border: solid 1px var(--border-secondary);
+    margin-bottom: 2px;
+}

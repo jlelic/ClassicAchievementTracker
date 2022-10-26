@@ -1,0 +1,94 @@
+.card {
+  max-width: 700px;
+  min-width: 600px;
+  min-height: 60px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffcd81;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: solid 2px #d08c20;
+}
+
+.iconWrapper {
+  min-width: 60px;
+  min-height: 60px;
+}
+
+.icon {
+  min-width: 56px;
+  min-height: 56px;
+  max-width: 56px;
+  max-height: 56px;
+  border-radius: 10px;
+  border: solid 2px #d08c20;
+  border-top: none;
+  border-left: none;
+  box-shadow: rgba(0,0,0, 0.3) 0px 7px 29px 0px;
+}
+
+.middleWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+}
+
+.title {
+  background-color: var(--background-title);
+  background: linear-gradient(90deg, transparent 0%, var(--background-title), var(--background-title) 80%, transparent 100%);;
+  margin-bottom: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-shadow: rgba(100, 100, 111, 0.3) 0px 7px 29px 0px;
+}
+
+.description {
+  padding: 0px 15px;
+  color: var(--description-text);
+  margin-bottom: 10px;
+}
+
+.name {
+  margin-top: auto;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--tooltip-text);
+}
+
+.pointsWrapper {
+  min-width: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.points {
+  min-width: 56px;
+  max-width: 56px;
+  min-height: 60px;
+  max-height: 60px;
+  padding-top: 20px;
+  text-align: center;
+  font-family: Impact;
+  font-size: 1.2rem;
+  background-image: url("/shield.svg");
+  background-repeat: no-repeat;
+  background-position-y: 3px;
+}
+
+.points.bronze {
+  color: #d3aa88;
+}
+
+.points.silver {
+  color: #f1ebe5;
+}
+.points.gold {
+  color: #ffd658;
+}
+
+.date {
+  color: var(--description-text);
+  font-size: 12px;
+}
