@@ -1,10 +1,6 @@
-import {ACHIEVEMENT_IDS_} from "./achievements";
-
-import moment from 'moment'
-
 export type PlayerAchievementData = {
     achievementId: number,
-    date: Date,
+    date: number,
 }
 
 type AddonPlayerData = {
@@ -30,11 +26,6 @@ for (let i = 0; i < b64chars.length; i++) {
     b64remap[b64chars.charAt(i)] = i;
 }
 
-const date0_01 = moment('08-31-22')
-const numToDate01 = (num: number): Date => {
-    return date0_01.clone().add(num, 'days').toDate()
-}
-
 const parseBinaryData01 = (text: string): PlayerAchievementData[] => {
     const result: PlayerAchievementData[] = []
     let bad
@@ -55,7 +46,7 @@ const parseBinaryData01 = (text: string): PlayerAchievementData[] => {
             const achievementId = ACHIEVEMENT_IDS_01[achievementIndex]
             result.push({
                 achievementId,
-                date: numToDate01(number)
+                date: number
             })
             if (bad)
                 console.log('done', achievementId, number)

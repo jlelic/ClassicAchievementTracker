@@ -1,24 +1,13 @@
-import { Character, PlayerAchievement } from "@prisma/client"
+import { Character } from "@prisma/client"
 
 
-export const serializeCharacter = (character: Character) => {
+export const serializeCharacter = (character: Partial<Character>) => {
     return {
         ...character,
         lastUpdate: character.lastUpdate?.toISOString()
     }
 }
 
-export const serializeCharacters = (characters: Character[]) => {
+export const serializeCharacters = (characters: Partial<Character>[]) => {
     return characters.map(serializeCharacter)
-}
-
-export const serializePlayerAchievement = (playerAchievement: Partial<PlayerAchievement>) => {
-    return {
-        ...playerAchievement,
-        date: playerAchievement.date?.toISOString()
-    }
-}
-
-export const serializePlayerAchievements = (playerAchievements: Partial<PlayerAchievement>[]) => {
-    return playerAchievements.map(serializePlayerAchievement)
 }

@@ -9,11 +9,11 @@ import styles from '/styles/Home.module.css'
 
 export default function App({
                                 Component,
-                                pageProps: { session, ...pageProps },
-                            }) {
+                                pageProps,
+                            }: AppProps) {
     return (
         <>
-            <SessionProvider session={session}>
+            <SessionProvider session={(pageProps as any).session}>
                 <Head>
                     <title>WoWCAT - Classic Achievement Tracker</title>
                 </Head>

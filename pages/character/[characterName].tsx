@@ -2,39 +2,39 @@ import type { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '/styles/Home.module.css'
-import { PlayerAchievement, PrismaClient } from '@prisma/client'
-import AchievementCategorySelector from '/components/AchievementCategorySelector'
-import { serializePlayerAchievements } from '../../lib/serializers'
-import moment from 'moment'
+import { Achievement, Character, PlayerAchievement, PrismaClient } from '@prisma/client'
+import AchievementCategorySelector from '../../components/AchievementCategorySelector'
 import { useEffect, useState } from 'react'
 import { AchievementCategory } from '../../lib/achievement-categories'
-import WowheadLink from '../../components/WowheadLink'
 import achievementStyles from '/styles/Achievement.module.css'
 import characterStyles from '/styles/Character.module.css'
 import clsx from 'clsx'
+import { getDaysAgoString, numToDateString } from '../../lib/utils'
 
-interface CharacterPageProps {
-    playerAchievements: PlayerAchievement[]
+interface FullPlayerAchievement extends PlayerAchievement {
+    achievement: Achievement,
+    character: Character,
 }
 
-const prepatchDate = moment(new Date('2022-08-31'))
-
+interface CharacterPageProps {
+    playerAchievements: FullPlayerAchievement []
+}
 
 const CharacterPage: NextPage<CharacterPageProps> = (props) => {
 
     const { playerAchievements } = props
 
     const [selectedCategory, setSelectedCategory] = useState<AchievementCategory | null>(null)
-    const [displayedAchievements, setDisplayedAchievements] = useState<PlayerAchievement[]>(playerAchievements)
+    const [displayedAchievements, setDisplayedAchievements] = useState<FullPlayerAchievement[]>(playerAchievements)
 
     useEffect(() => {
         setDisplayedAchievements(
-            playerAchievements.filter(a => !selectedCategory || a.achievement.categoryId === selectedCategory.id)
+            playerAchievements.filter(a => !selectedCategory || (a.achievement as Achievement) .categoryId === selectedCategory.id)
         )
-    }, [selectedCategory])
+    }, [selectedCategory, playerAchievements])
 
 
-    const onCategorySelected = (category: AchievementCategory) => {
+    const onCategorySelected = (category: AchievementCategory | null) => {
         setSelectedCategory(category)
     }
 
@@ -51,8 +51,7 @@ const CharacterPage: NextPage<CharacterPageProps> = (props) => {
                     <div className={characterStyles.achievements}>
                         {displayedAchievements.length > 0 ? displayedAchievements.map((playerAchievement, index) => {
                             const { achievement, character, date } = playerAchievement
-                            const momentDate = moment(date)
-                            return <div className={achievementStyles.card}>
+                            return <div key={achievement.id} className={achievementStyles.card}>
 
                                 <div className={achievementStyles.iconWrapper}>
                                     <div
@@ -70,7 +69,7 @@ const CharacterPage: NextPage<CharacterPageProps> = (props) => {
                                         {achievement.description}
                                     </div>
                                     <div className={achievementStyles.name}>
-                                        Earned by {character.name} {momentDate.isAfter(prepatchDate) ? momentDate.fromNow() : 'before WotLK pre-patch'}
+                                        Earned by {character.name} {getDaysAgoString(date)}
                                     </div>
 
                                 </div>
@@ -84,7 +83,7 @@ const CharacterPage: NextPage<CharacterPageProps> = (props) => {
                                         {achievement.points}
                                     </div>
                                     <div className={achievementStyles.date}>
-                                        {momentDate.isAfter(prepatchDate) ? momentDate.format('MM/DD/YY') : 'Pre-WotLK'}
+                                        {numToDateString(date)}
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +133,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     return {
         props: {
-            playerAchievements: serializePlayerAchievements(characterAchievements)
+            playerAchievements: characterAchievements
         }, // will be passed to the page component as props
     }
 }

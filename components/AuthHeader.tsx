@@ -2,7 +2,7 @@ import {signIn, signOut, useSession} from "next-auth/react";
 
 import styles from '/styles/Header.module.css'
 
-export default () => {
+export default function AuthHeader(){
     const {data: session} = useSession()
     if (session) {
         return (

@@ -3,7 +3,6 @@ import type {NextApiRequest, NextApiResponse} from 'next'
 import {decodeAddonData, PlayerAchievementData} from "../../lib/decoder";
 import {PrismaClient} from "@prisma/client";
 import {loadAchievementsPoints} from "../../lib/cache";
-import moment from "moment";
 
 type Data = {
     name: string
@@ -92,14 +91,32 @@ export default async function handler(
         } else {
             console.log(`Found ${name}`)
 
-            if(!moment(time).isBefore(character.lastUpdate)) {
+            if(time < (character.lastUpdate || 0)) {
                 console.log(`Too old data for ${name}, skipping`)
+                console.log(time)
+                console.log(character.lastUpdate)
                 continue
             }
 
             const alreadyHasAchievement = new Set(character.achievements.map(a => a.achievementId))
-            const missingAchievements = achievements.filter(a => !alreadyHasAchievement.has(a.achievementId));
-            await bulkCreateAchievements(prisma, character.id, achievements)
+            const missingAchievements = achievements.filter(a => !alreadyHasAchievement.has(a.achievementId))
+            const points = achievements
+                .map(a => achievementsPoints[a.achievementId])
+                .reduce((a, b) => a + b, 0)
+
+            await bulkCreateAchievements(prisma, character.id, missingAchievements)
+            await prisma.character.update({
+                data: {
+                    lastUpdate: time,
+                    achievementCount: alreadyHasAchievement.size + missingAchievements.length,
+                    achievementPoints: points,
+                },
+                where: {
+                    name_realm: {
+                        name, realm
+                    }
+                }
+            })
         }
     }
     res.status(200).json({result} as any)

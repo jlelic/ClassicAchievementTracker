@@ -8,9 +8,13 @@ import { serializeCharacters } from '../lib/serializers'
 import AchievementCategorySelector from '../components/AchievementCategorySelector'
 import Link from 'next/link'
 import clsx from 'clsx'
-import moment from 'moment'
+import {format as formatTimeAgo} from 'timeago.js'
 
-const Home: NextPage = (props) => {
+interface HomePageProps {
+    tableData: any[];
+}
+
+const Home: NextPage<HomePageProps> = (props) => {
 
     const { tableData } = props
 
@@ -37,7 +41,10 @@ const Home: NextPage = (props) => {
                             Updated
                         </div>
                     </div>
-                    {tableData.map((character, index) => <div className={playerStyles.row}>
+                    {tableData.map((character, index) => <div
+                        key={character.name}
+                        className={playerStyles.row}
+                    >
                         <div className={clsx(playerStyles.cell, playerStyles.index)}>
                             {index + 1}.
                         </div>
@@ -53,7 +60,8 @@ const Home: NextPage = (props) => {
                             {character.achievementPoints}
                         </div>
                         <div className={clsx(playerStyles.cell, playerStyles.date)}>
-                            {moment(character.lastUpdate).fromNow()}
+                            {formatTimeAgo(character.lastUpdate)}
+                            {/*{moment(character.lastUpdate).fromNow()}*/}
                         </div>
                     </div>)}
                 </div>
@@ -83,7 +91,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return {
         props: {
             tableData: serializeCharacters(leaderboard)
-        }, // will be passed to the page component as props
+        },
     }
 }
 

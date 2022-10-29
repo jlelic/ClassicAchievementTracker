@@ -46,7 +46,7 @@ export default function AchievementCategorySelector(props: AchievementCategorySe
     return <>
         {
             parentCategories.map(category => {
-                return <div className={styles.selector}>
+                return <div key={category.id} className={styles.selector}>
                     <div
                         onClick={() => selectCategory(category)}
                         className={clsx(
@@ -65,6 +65,7 @@ export default function AchievementCategorySelector(props: AchievementCategorySe
                         && <div>
                             {childCategories[category.id].map(child =>
                                 <div
+                                    key={child.id}
                                     className={clsx(
                                         styles.child,
                                         styles.category,

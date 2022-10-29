@@ -110,10 +110,10 @@ model Character {
 model PlayerAchievement {
     id                  String @id @default(cuid())
     characterId         String
-    character           Character @relation(fields: [characterId], references: [id])
+    character           Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
     achievementId       Int
     achievement         Achievement @relation(fields: [achievementId], references: [id])
-    date                DateTime @db.Date
+    date                Int
 
     @@unique([characterId, achievementId], map: "PlayerAchievement_character_achievement_constraint")
 }
